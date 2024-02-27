@@ -1,4 +1,3 @@
-
 package com.practica.service.impl;
 
 import com.practica.dao.ArbolDao;
@@ -10,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class ArbolServiceImpl implements ArbolService{
+public class ArbolServiceImpl implements ArbolService {
     
     @Autowired
     private ArbolDao arbolDao;
@@ -18,8 +17,7 @@ public class ArbolServiceImpl implements ArbolService{
     @Override
     @Transactional(readOnly = true)
     public List<Arbol> getArboles() {
-       List<Arbol> lista = arbolDao.findAll();
-       return lista;
+       return arbolDao.findAll();
     }
 
     @Override
@@ -39,5 +37,4 @@ public class ArbolServiceImpl implements ArbolService{
     public void delete(Arbol arbol) {
         arbolDao.delete(arbol);
     }
-    
 }

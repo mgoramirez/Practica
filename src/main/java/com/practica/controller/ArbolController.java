@@ -1,62 +1,74 @@
-
 package com.practica.controller;
 
 import com.practica.domain.Arbol;
 import com.practica.service.ArbolService;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import com.practica.service.FirebaseStorageServiceImpl;
 
+import java.util.List;
 
 @Controller
 @RequestMapping("/arbol")
 public class ArbolController {
-    
+
     @Autowired
-    ArbolService arbolService;
-    
+    private ArbolService arbolService;
+
+    @Autowired
+    private FirebaseStorageServiceImpl firebaseStorageService;
+
     @GetMapping("/listado")
     public String listado(Model model) {
         List<Arbol> lista = arbolService.getArboles();
-        model.addAttribute("Arbol", lista);
-        return "/arbol/listado";
-    }
-    @GetMapping("/nuevo")
-    public String ArbolNuevo(Arbol arbol) {
-        return "/arbol/modifica";
+        model.addAttribute("arboles", lista);
+        return "arbol/listado";
     }
 
-   /* @Autowired
-    private FirebaseStorageServiceImpl firebaseStorageService;*/
-    /*
+    @GetMapping("/nuevo")
+    public String arbolNuevo(Model model) {
+        model.addAttribute("arbol", new Arbol());
+        return "arbol/modifica";
+    }
+
     @PostMapping("/guardar")
-    public String arbolGuardar(Arbol categoria,
-            @RequestParam("imagenFile") MultipartFile imagenFile) {        
-        if (!imagenFile.isEmpty()) {
-            arbolService.save(categoria);
-            arbol.setRutaImagen(
-                    firebaseStorageService.cargaImagen(
-                            imagenFile, 
-                            "arbol", 
-                            arbol.getIdCategoria()));
+    public String arbolGuardar(@ModelAttribute("arbol") Arbol arbol, @RequestParam("imagenFile") MultipartFile imagenFile, Model model) {
+        try {
+            if (!imagenFile.isEmpty()) {
+                String nombreArchivo = imagenFile.getOriginalFilename();
+                String carpeta = "imagenes_arboles";
+                String urlImagen = firebaseStorageService.cargaImagen(imagenFile, carpeta, nombreArchivo);
+                if (urlImagen != null) {
+                    arbol.setRutaImagen(urlImagen);
+                } else {
+                    model.addAttribute("error", "Error al cargar la imagen.");
+                    return "arbol/modifica";
+                }
+            }
+            arbolService.save(arbol);
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("error", "Error al guardar el árbol.");
+            return "arbol/modifica";
         }
-        arbolService.save(categoria);
         return "redirect:/arbol/listado";
     }
-*/
+
     @GetMapping("/eliminar/{idArbol}")
-    public String arbolEliminar(Arbol categoria) {
-        arbolService.delete(categoria);
+    public String arbolEliminar(@PathVariable("idArbol") Long idArbol) {
+        arbolService.delete(idArbol);
         return "redirect:/arbol/listado";
     }
 
     @GetMapping("/modificar/{idArbol}")
-    public String arbolModificar(Arbol arbol, Model model) {
-        arbol = arbolService.getArbol(arbol);
+    public String arbolModificar(@PathVariable("idArbol") Long idArbol, Model model) {
+        Arbol arbol = arbolService.getArbol(idArbol);
         model.addAttribute("arbol", arbol);
-        return "/arbol/modifica";
-    }
+        return "arbol/modifica";
+    
+}
+    
 }

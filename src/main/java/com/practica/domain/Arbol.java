@@ -1,4 +1,3 @@
-
 package com.practica.domain;
 
 import jakarta.persistence.*;
@@ -21,9 +20,11 @@ public class Arbol implements Serializable{
     private double altura;
     private double grosor;
 
+    // Constructor vacío
     public Arbol() {
     }
 
+    // Constructor con todos los campos
     public Arbol(String nombre, String nombreCientifico, String rutaImagen, double altura, double grosor) {
         this.nombre = nombre;
         this.nombreCientifico = nombreCientifico;
@@ -31,6 +32,64 @@ public class Arbol implements Serializable{
         this.altura = altura;
         this.grosor = grosor;
     }
-    
-    
+
+    // Getter para idArbol
+    public Long getIdArbol() {
+        return idArbol;
+    }
+
+    // Setter para idArbol
+    public void setIdArbol(Long idArbol) {
+        this.idArbol = idArbol;
+    }
+
+    // Getter para nombre
+    public String getNombre() {
+        return nombre;
+    }
+
+    // Setter para nombre
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    // Getter para nombreCientifico
+    public String getNombreCientifico() {
+        return nombreCientifico;
+    }
+
+    // Setter para nombreCientifico
+    public void setNombreCientifico(String nombreCientifico) {
+        this.nombreCientifico = nombreCientifico;
+    }
+
+    // Getter para rutaImagen
+    public String getRutaImagen() {
+        return rutaImagen;
+    }
+
+    // Setter para rutaImagen
+    public void setRutaImagen(String rutaImagen) {
+        this.rutaImagen = rutaImagen;
+    }
+
+    // Getter para altura
+    public double getAltura() {
+        return altura;
+    }
+
+    // Setter para altura
+    public void setAltura(double altura) {
+        this.altura = altura;
+    }
+
+    // Getter para grosor
+    public double getGrosor() {
+        return grosor;
+    }
+
+    // Setter para grosor
+    public void setGrosor(double grosor) {
+        this.grosor = grosor;
+    }
 }

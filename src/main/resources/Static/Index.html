@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listado de Árboles</title>
+</head>
+<body>
+    <h1>Listado de Árboles</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Nombre Científico</th>
+                <th>Altura</th>
+                <th>Grosor</th>
+                <th>Imagen</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Iterar sobre la lista de árboles -->
+            <th:each var="arbol" items="${arboles}">
+                <tr>
+                    <td>${arbol.idArbol}</td>
+                    <td>${arbol.nombre}</td>
+                    <td>${arbol.nombreCientifico}</td>
+                    <td>${arbol.altura}</td>
+                    <td>${arbol.grosor}</td>
+                    <!-- Si hay una ruta de imagen, mostrarla -->
+                    <td th:if="${arbol.rutaImagen}">
+                        <img th:src="${arbol.rutaImagen}" style="width: 100px; height: 100px;" alt="Imagen de árbol">
+                    </td>
+                    <!-- Si no hay ruta de imagen, mostrar un mensaje -->
+                    <td th:unless="${arbol.rutaImagen}">No disponible</td>
+                    <td>
+                        <!-- Enlace para eliminar el árbol -->
+                        <a th:href="@{/arbol/eliminar/{idArbol}(idArbol=${arbol.idArbol})}">Eliminar</a>
+                        <!-- Enlace para modificar el árbol -->
+                        <a th:href="@{/arbol/modificar/{idArbol}(idArbol=${arbol.idArbol})}">Modificar</a>
+                    </td>
+                </tr>
+            </th:each>
+        </tbody>
+    </table>
+    <!-- Enlace para agregar un nuevo árbol -->
+    <a href="/arbol/nuevo">Agregar Nuevo Árbol</a>
+</body>
+</html>
